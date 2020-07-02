@@ -1,5 +1,1 @@
-import React from 'react';
-
-export default class MainArea extends React.Component {
-  
-}
+import React, { useState } from "react";
