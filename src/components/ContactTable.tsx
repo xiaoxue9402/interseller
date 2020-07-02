@@ -1,40 +1,62 @@
 import React from "react";
 import MaterialTable, { Column } from "material-table";
 
-interface Row {
-  firstName: string;
-  lastName: string;
-  label: string;
-  organization: string;
-  email: string;
-  phone: string;
-}
+import { Data } from "./interface";
 
-interface TableState {
-  columns: Array<Column<Row>>;
-  data: Row[];
-}
 
-const contactsTable = () => {
-  const [state, setState] = React.useState<TableState>({
-    columns: [
-      { title: "First Name", field: "firstName" },
-      { title: "Last Name", field: "lastName" },
-      { title: "Label", field: "label" },
-      { title: "Organization", field: "organization" },
-      { title: "Email", field: "email" },
-      { title: "Phone", field: "phone" },
-    ],
-    data: [
-      { name: "Mehmet", surname: "Baran", birthYear: 1987, birthCity: 63 },
-      {
-        name: "Zerya Betül",
-        surname: "Baran",
-        birthYear: 2017,
-        birthCity: 34,
-      },
-    ],
-  });
+interface Props {
+  contacts: [];
+}
+export const ContactsTable = (props): JSX.Element => {
+  const [columns, setColumns] = React.useState([
+    { title: "First Name", field: "firstName" },
+    { title: "Last Name", field: "lastName" },
+    { title: "Label", field: "label" },
+    { title: "Organization", field: "organization" },
+    { title: "Email", field: "email" },
+    { title: "Phone", field: "phone" },
+  ]);
+  const [data, setData] = React.useState<Array<Data>>(
+    props.map((person: Data) => {
+      return {
+        firstName: person.firstName,
+        lastName: person.lastName,
+        label: person.label,
+        organization: person.organization,
+        email: person.email,
+        phone: person.phone,
+      };
+    })
+  );
+
+  const handleAddRow = (newData: Data) =>
+    new Promise((resolve, reject) => {
+      () => {
+        setData([...data, newData]);
+        resolve();
+      };
+    });
+
+  const handleRowUpdate = (newData, oldData) =>
+    new Promise((resolve, reject) => {
+      const updatedData = [...data];
+      const index = oldData.tableData.id;
+      updatedData[index] = newData;
+      setData([...updatedData]);
+      resolve();
+    });
+
+  return (
+    <MaterialTable
+      title="Person Recorder"
+      columns={columns}
+      data={data}
+      editable={{
+        onRowAdd: (newData) => handleAddRow(newData),
+        onRowUpdate: (newData, oldData) => handleRowUpdate(newData, oldData),
+      }}
+    />
+  );
 };
 
-export default contactsTable;
+
