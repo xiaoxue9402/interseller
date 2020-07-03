@@ -1,4 +1,4 @@
-## Persons Record
+## Person Record
 - Utilizes React, Webpack, TypeScript
 - Material-UI for CSS components (mainly the table)
 
