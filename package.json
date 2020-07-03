@@ -16,7 +16,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "npx eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
