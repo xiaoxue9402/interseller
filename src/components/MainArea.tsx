@@ -1,25 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-import {ContactsTable} from './ContactTable';
-import {Data} from "./interface"
+import { ContactsTable } from "./ContactTable";
+import { Data } from "./interface";
 
 interface Props {
-  contacts: Data[];
-} 
-export default class MainArea extends React.Component<Props> {
+  contacts: any[];
+}
+
+interface State {
+  contactInfo: any[];
+}
+
+export default class MainArea extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state = {
+      contactInfo: [],
+    };
   }
-  render() :JSX.Element {
+  componentDidMount() {
+    const people = this.props.contacts.map((contact) => {
+      return {
+        firstName: contact.first_name,
+        lastName: contact.last_name,
+        organization: contact.org_name,
+        email: contact.email[0].value,
+        phone: contact.phone[0].value,
+      };
+    })
+    return this.setState({contactInfo: [...people]});
+  }
+  render(): JSX.Element {
+    console.log(this.state)
     return (
       <div>
-        <ContactsTable
-          contacts={this.props.contacts}
-        >
-  
-        </ContactsTable>
+        <ContactsTable contactInfo={this.state.contactInfo} />
       </div>
-    )
+    );
   }
-  
 }
